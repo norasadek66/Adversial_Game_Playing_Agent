@@ -78,23 +78,23 @@ class CustomPlayer(DataPlayer):
                 best_move = a
         return best_move
 
-    def min_value(self, gameState, alpha, beta, depth, transpose_table, killer_moves):
-        """ Return the value for a win (+1) if the game is over,
-        otherwise return the minimum value over all legal child
-        nodes.
-        """
-        if gameState.terminal_test():
-            return gameState.utility(0)
-        if depth <= 0:
-            return self.my_moves(gameState)
-
-        v = float("inf")
-        for a in gameState.actions():
-            v = min(v, self.max_value(gameState.result(a), alpha, beta, depth-1, transpose_table, killer_moves))
-            if v <= alpha:
-                return v
-            beta = min(beta, v)
-        return v
+    # def min_value(self, gameState, alpha, beta, depth, transpose_table, killer_moves):
+    #     """ Return the value for a win (+1) if the game is over,
+    #     otherwise return the minimum value over all legal child
+    #     nodes.
+    #     """
+    #     if gameState.terminal_test():
+    #         return gameState.utility(0)
+    #     if depth <= 0:
+    #         return self.my_moves(gameState)
+    #
+    #     v = float("inf")
+    #     for a in gameState.actions():
+    #         v = min(v, self.max_value(gameState.result(a), alpha, beta, depth-1, transpose_table, killer_moves))
+    #         if v <= alpha:
+    #             return v
+    #         beta = min(beta, v)
+    #     return v
     # def min_value22(self, gameState, alpha, beta, depth, transpose_table, killer_moves, ply):
     #     """"""
     #     if gameState.terminal_test():
@@ -153,81 +153,81 @@ class CustomPlayer(DataPlayer):
     #             v = transpose_table[gameState][1]
     #     return v
 
-    # def min_value(self, gameState, alpha, beta, depth, transpose_table, killer_moves):
-    #         """"""
-    #         if gameState.terminal_test():
-    #             return gameState.utility(0)
-    #         if depth <= 0:
-    #             return self.my_moves(gameState)
-    #
-    #         v = float("inf")
-    #
-    #         if len(transpose_table[gameState]) == 0:
-    #             score_moves = self.score_moves(gameState.actions(), transpose_table, killer_moves, depth, gameState)
-    #             transpose_table[gameState] = [0] * 5
-    #             legal_moves = gameState.actions()
-    #             for i in range(0, len(legal_moves)):
-    #                 best_idX = i
-    #                 for j in range(i + 1, len(legal_moves)):
-    #                     if score_moves[legal_moves[best_idX]] <= score_moves[legal_moves[j]]:
-    #                         best_idX = j
-    #                 temp = legal_moves[i]
-    #                 legal_moves[i] = legal_moves[best_idX]
-    #                 legal_moves[best_idX] = temp
-    #                 #legal_moves[i], legal_moves[best_idX] = legal_moves[best_idX], legal_moves[i]
-    #                 v = min(v, self.max_value(gameState.result(legal_moves[i]), alpha, beta, depth - 1, transpose_table,
-    #                                           killer_moves))
-    #                 if alpha >= v:
-    #                     transpose_table[gameState][0] = depth
-    #                     transpose_table[gameState][1] = v
-    #                     transpose_table[gameState][2] = legal_moves[i]
-    #                     transpose_table[gameState][3] = "alpha_cut"
-    #                     return v
-    #                 elif v > alpha and v < beta:
-    #                     transpose_table[gameState][3] = "pv_node"
-    #                 else:
-    #                     transpose_table[gameState][3] = "fail_node"
-    #                 beta = min(v, beta)
-    #             transpose_table[gameState][0] = depth
-    #             transpose_table[gameState][1] = v
-    #             transpose_table[gameState][2] = legal_moves[i]
-    #
-    #         else:
-    #             #Assigned scores to our legal moves
-    #             score_moves = self.score_moves(gameState.actions(), transpose_table, killer_moves, depth, gameState)
-    #
-    #             largest_depth_so_far = transpose_table[gameState][0]
-    #
-    #             if depth >= largest_depth_so_far:
-    #                 legal_moves = gameState.actions()
-    #                 for i in range(0, len(legal_moves)):
-    #                     best_idX = i
-    #                     for j in range(i+1, len(legal_moves)):
-    #                         if score_moves[legal_moves[best_idX]] < score_moves[legal_moves[j]]:
-    #                             best_idX = j
-    #                     temp = legal_moves[i]
-    #                     legal_moves[i] = legal_moves[best_idX]
-    #                     legal_moves[best_idX] = temp
-    #                     v = min(v, self.max_value(gameState.result(legal_moves[i]), alpha, beta, depth - 1, transpose_table, killer_moves
-    #                                             ))
-    #                     if alpha >= v:
-    #                         transpose_table[gameState][0] = depth
-    #                         transpose_table[gameState][1] = v
-    #                         transpose_table[gameState][2] = legal_moves[i]
-    #                         transpose_table[gameState][3] = "alpha_cut"
-    #                         return v
-    #                     elif v > alpha and v < beta:
-    #                         transpose_table[gameState][3] = "pv_node"
-    #                     else:
-    #                         transpose_table[gameState][3] = "fail_node"
-    #                     beta = min(v, beta)
-    #                 transpose_table[gameState][0] = depth
-    #                 transpose_table[gameState][1] = v
-    #                 transpose_table[gameState][2] = legal_moves[i]
-    #
-    #             else:
-    #                 v = transpose_table[gameState][1]
-    #         return v
+    def min_value(self, gameState, alpha, beta, depth, transpose_table, killer_moves):
+            """"""
+            if gameState.terminal_test():
+                return gameState.utility(0)
+            if depth <= 0:
+                return self.my_moves(gameState)
+
+            v = float("inf")
+
+            if len(transpose_table[gameState]) == 0:
+                score_moves = self.score_moves(gameState.actions(), transpose_table, killer_moves, depth, gameState)
+                transpose_table[gameState] = [0] * 5
+                legal_moves = gameState.actions()
+                for i in range(0, len(legal_moves)):
+                    best_idX = i
+                    for j in range(i + 1, len(legal_moves)):
+                        if score_moves[legal_moves[best_idX]] <= score_moves[legal_moves[j]]:
+                            best_idX = j
+                    temp = legal_moves[i]
+                    legal_moves[i] = legal_moves[best_idX]
+                    legal_moves[best_idX] = temp
+                    #legal_moves[i], legal_moves[best_idX] = legal_moves[best_idX], legal_moves[i]
+                    v = min(v, self.max_value(gameState.result(legal_moves[i]), alpha, beta, depth - 1, transpose_table,
+                                              killer_moves))
+                    if alpha >= v:
+                        transpose_table[gameState][0] = depth
+                        transpose_table[gameState][1] = v
+                        transpose_table[gameState][2] = legal_moves[i]
+                        transpose_table[gameState][3] = "alpha_cut"
+                        return v
+                    elif v > alpha and v < beta:
+                        transpose_table[gameState][3] = "pv_node"
+                    else:
+                        transpose_table[gameState][3] = "fail_node"
+                    beta = min(v, beta)
+                transpose_table[gameState][0] = depth
+                transpose_table[gameState][1] = v
+                transpose_table[gameState][2] = legal_moves[i]
+
+            else:
+                #Assigned scores to our legal moves
+                score_moves = self.score_moves(gameState.actions(), transpose_table, killer_moves, depth, gameState)
+
+                largest_depth_so_far = transpose_table[gameState][0]
+
+                if depth >= largest_depth_so_far:
+                    legal_moves = gameState.actions()
+                    for i in range(0, len(legal_moves)):
+                        best_idX = i
+                        for j in range(i+1, len(legal_moves)):
+                            if score_moves[legal_moves[best_idX]] < score_moves[legal_moves[j]]:
+                                best_idX = j
+                        temp = legal_moves[i]
+                        legal_moves[i] = legal_moves[best_idX]
+                        legal_moves[best_idX] = temp
+                        v = min(v, self.max_value(gameState.result(legal_moves[i]), alpha, beta, depth - 1, transpose_table, killer_moves
+                                                ))
+                        if alpha >= v:
+                            transpose_table[gameState][0] = depth
+                            transpose_table[gameState][1] = v
+                            transpose_table[gameState][2] = legal_moves[i]
+                            transpose_table[gameState][3] = "alpha_cut"
+                            return v
+                        elif v > alpha and v < beta:
+                            transpose_table[gameState][3] = "pv_node"
+                        else:
+                            transpose_table[gameState][3] = "fail_node"
+                        beta = min(v, beta)
+                    transpose_table[gameState][0] = depth
+                    transpose_table[gameState][1] = v
+                    transpose_table[gameState][2] = legal_moves[i]
+
+                else:
+                    v = transpose_table[gameState][1]
+            return v
     # scoring legal moves
     def score_moves(self, legal_moves, transpose_table, killer_moves, current_depth, gameState):
         moves_with_scores = {}
@@ -251,113 +251,113 @@ class CustomPlayer(DataPlayer):
 
 
 
-    def max_value(self,gameState, alpha, beta,depth, transpose_table, killer_moves):
-        if gameState.terminal_test():
-            return gameState.utility(0)
-        if depth <= 0:
-            return self.my_moves(gameState)
-
-        v = float("-inf")
-
-        for a in gameState.actions():
-            v = max(v, self.min_value(gameState.result(a), alpha, beta, depth - 1, transpose_table, killer_moves))
-            if v >= beta:
-                return v
-            alpha = max(v, alpha)
-            # save the value of the best move in the transposition table
-        return v
-
-
-
-
-
-
-
-    # def max_value(self, gameState, alpha, beta, depth, transpose_table, killer_moves):
-    #     """"""
+    # def max_value(self,gameState, alpha, beta,depth, transpose_table, killer_moves):
     #     if gameState.terminal_test():
-    #         #print(gameState.utility(0))
     #         return gameState.utility(0)
     #     if depth <= 0:
     #         return self.my_moves(gameState)
     #
     #     v = float("-inf")
     #
-    #     if len(transpose_table[gameState]) == 0:
-    #         score_moves = self.score_moves(gameState.actions(), transpose_table, killer_moves, depth, gameState)
-    #
-    #         transpose_table[gameState] = [0] * 5
-    #         legal_moves = gameState.actions()
-    #         for i in range(0, len(legal_moves)):
-    #             best_idX = i
-    #
-    #             for j in range(i + 1, len(legal_moves)):
-    #                 if score_moves[legal_moves[best_idX]] < score_moves[legal_moves[j]]:
-    #                     best_idX = j
-    #             temp = legal_moves[i]
-    #             legal_moves[i] = legal_moves[best_idX]
-    #             legal_moves[best_idX] = temp
-    #             #legal_moves[i], legal_moves[best_idX] = legal_moves[best_idX], legal_moves[i]
-    #
-    #             v = max(v, self.min_value(gameState.result(legal_moves[i]), alpha, beta, depth - 1, transpose_table,
-    #                                       killer_moves
-    #                                       ))
-    #             #beta cut-offs
-    #             if v >= beta:
-    #                 transpose_table[gameState][3] = "beta_cut"
-    #                 transpose_table[gameState][0] = depth
-    #                 transpose_table[gameState][1] = v
-    #                 transpose_table[gameState][2] = legal_moves[i]
-    #                 if len(killer_moves[depth]) < 2:
-    #                     killer_moves[depth].append(legal_moves[i])
-    #                 return v
-    #             elif v > alpha and v < beta:
-    #                 transpose_table[gameState][3] = "pv_node"
-    #             else:
-    #                 transpose_table[gameState][3] = "fail_node"
-    #             alpha = max(v, alpha)
-    #         transpose_table[gameState][0] = depth
-    #         transpose_table[gameState][1] = v
-    #         transpose_table[gameState][2] = legal_moves[i]
-    #
-    #     else:
-    #
-    #         score_moves = self.score_moves(gameState.actions(), transpose_table, killer_moves, depth, gameState)
-    #
-    #         largest_depth_so_far = transpose_table[gameState][0]
-    #
-    #         if depth >= largest_depth_so_far:
-    #             legal_moves = gameState.actions()
-    #             for i in range(0, len(legal_moves)):
-    #                 best_idX = i
-    #                 for j in range(i+1, len(legal_moves)):
-    #                     if score_moves[legal_moves[best_idX]] < score_moves[legal_moves[j]]:
-    #                         best_idX = j
-    #
-    #                 temp = legal_moves[i]
-    #                 legal_moves[i] = legal_moves[best_idX]
-    #                 legal_moves[best_idX] = temp
-    #                 #legal_moves[i], legal_moves[best_idX] = legal_moves[best_idX], legal_moves[i]
-    #                 v = max(v, self.min_value(gameState.result(legal_moves[i]), alpha, beta, depth - 1, transpose_table, killer_moves
-    #                                       ))
-    #                 if v >= beta:
-    #                     transpose_table[gameState][3] = "beta_cut"
-    #                     transpose_table[gameState][0] = depth
-    #                     transpose_table[gameState][1] = v
-    #                     transpose_table[gameState][2] = legal_moves[i]
-    #                     if len(killer_moves[depth]) < 2:
-    #                         killer_moves[depth].append(legal_moves[i])
-    #                     return v
-    #                 elif v > alpha and v < beta:
-    #                     transpose_table[gameState][3] = "pv_node"
-    #                 else:
-    #                     transpose_table[gameState][3] = "fail_node"
-    #                 alpha = max(v, alpha)
-    #
-    #             transpose_table[gameState][0] = depth
-    #             transpose_table[gameState][1] = v
-    #             transpose_table[gameState][2] = legal_moves[i]
-    #
-    #         else:
-    #             v = transpose_table[gameState][1]
+    #     for a in gameState.actions():
+    #         v = max(v, self.min_value(gameState.result(a), alpha, beta, depth - 1, transpose_table, killer_moves))
+    #         if v >= beta:
+    #             return v
+    #         alpha = max(v, alpha)
+    #         # save the value of the best move in the transposition table
     #     return v
+
+
+
+
+
+
+
+    def max_value(self, gameState, alpha, beta, depth, transpose_table, killer_moves):
+        """"""
+        if gameState.terminal_test():
+            #print(gameState.utility(0))
+            return gameState.utility(0)
+        if depth <= 0:
+            return self.my_moves(gameState)
+
+        v = float("-inf")
+
+        if len(transpose_table[gameState]) == 0:
+            score_moves = self.score_moves(gameState.actions(), transpose_table, killer_moves, depth, gameState)
+
+            transpose_table[gameState] = [0] * 5
+            legal_moves = gameState.actions()
+            for i in range(0, len(legal_moves)):
+                best_idX = i
+
+                for j in range(i + 1, len(legal_moves)):
+                    if score_moves[legal_moves[best_idX]] < score_moves[legal_moves[j]]:
+                        best_idX = j
+                temp = legal_moves[i]
+                legal_moves[i] = legal_moves[best_idX]
+                legal_moves[best_idX] = temp
+                #legal_moves[i], legal_moves[best_idX] = legal_moves[best_idX], legal_moves[i]
+
+                v = max(v, self.min_value(gameState.result(legal_moves[i]), alpha, beta, depth - 1, transpose_table,
+                                          killer_moves
+                                          ))
+                #beta cut-offs
+                if v >= beta:
+                    transpose_table[gameState][3] = "beta_cut"
+                    transpose_table[gameState][0] = depth
+                    transpose_table[gameState][1] = v
+                    transpose_table[gameState][2] = legal_moves[i]
+                    if len(killer_moves[depth]) < 2:
+                        killer_moves[depth].append(legal_moves[i])
+                    return v
+                elif v > alpha and v < beta:
+                    transpose_table[gameState][3] = "pv_node"
+                else:
+                    transpose_table[gameState][3] = "fail_node"
+                alpha = max(v, alpha)
+            transpose_table[gameState][0] = depth
+            transpose_table[gameState][1] = v
+            transpose_table[gameState][2] = legal_moves[i]
+
+        else:
+
+            score_moves = self.score_moves(gameState.actions(), transpose_table, killer_moves, depth, gameState)
+
+            largest_depth_so_far = transpose_table[gameState][0]
+
+            if depth >= largest_depth_so_far:
+                legal_moves = gameState.actions()
+                for i in range(0, len(legal_moves)):
+                    best_idX = i
+                    for j in range(i+1, len(legal_moves)):
+                        if score_moves[legal_moves[best_idX]] < score_moves[legal_moves[j]]:
+                            best_idX = j
+
+                    temp = legal_moves[i]
+                    legal_moves[i] = legal_moves[best_idX]
+                    legal_moves[best_idX] = temp
+                    #legal_moves[i], legal_moves[best_idX] = legal_moves[best_idX], legal_moves[i]
+                    v = max(v, self.min_value(gameState.result(legal_moves[i]), alpha, beta, depth - 1, transpose_table, killer_moves
+                                          ))
+                    if v >= beta:
+                        transpose_table[gameState][3] = "beta_cut"
+                        transpose_table[gameState][0] = depth
+                        transpose_table[gameState][1] = v
+                        transpose_table[gameState][2] = legal_moves[i]
+                        if len(killer_moves[depth]) < 2:
+                            killer_moves[depth].append(legal_moves[i])
+                        return v
+                    elif v > alpha and v < beta:
+                        transpose_table[gameState][3] = "pv_node"
+                    else:
+                        transpose_table[gameState][3] = "fail_node"
+                    alpha = max(v, alpha)
+
+                transpose_table[gameState][0] = depth
+                transpose_table[gameState][1] = v
+                transpose_table[gameState][2] = legal_moves[i]
+
+            else:
+                v = transpose_table[gameState][1]
+        return v
