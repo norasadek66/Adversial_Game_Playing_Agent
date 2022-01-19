@@ -35,7 +35,18 @@ the sorting is done as follows : a) The transposition table moves come first, wh
 b) After that, the two killer moves.
 
 The move ordering is process is done using Selection-Sort in the `min_value`  `max_values` functions.
+## Running the code to test the agent
+You can run matches to test the performance of the efficient implemented agent against sample opponents.
+Example Usage:
+--------------
+            - Run 40 games (10 rounds = 20 games x2 for fair matches = 40 games) against
+              the greedy agent with 4 parallel processes: 
 
+                $python run_match.py -f -r 10 -o GREEDY -p 4
+
+            - Run 100 rounds (100 rounds = 200 games) against the minimax agent with 1 process:
+
+                $python run_match.py -r 100
 
 
 
