@@ -1,8 +1,8 @@
- Build an Adversarial Game Playing Agent
+Build an Adversarial Game Playing Agent
 
 ![Example game of isolation on a square board](viz.gif)
 ## Synopsis
-
+This is the 3rd requirement project from the Udacity Artificial Intelligence Nanodegree program. <br>
 In this project, I used adversarial search techniques to build an agent to play knights Isolation.
 ### Isolation
 
